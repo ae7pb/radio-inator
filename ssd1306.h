@@ -69,9 +69,9 @@
 
 
 #define SSD1306_SET_ADDRESSING  	0x20
-#define SSD1306_HORIZ_ADDR              0x01
-#define SSD1306_VERT_ADDR               0x02
-#define SSD1306_PAGE_ADDR               0x03
+#define SSD1306_HORIZ_ADDR              0x00
+#define SSD1306_VERT_ADDR               0x01
+#define SSD1306_PAGE_ADDR               0x02
 /*
  * Then send 0x01 for Horizontal Addressing, 0x02 for VerticalAddressing,
  * 0x03 for Page Addressing - Horizantal means you go left to right like reading
@@ -155,9 +155,11 @@ void ssd1306SetCommandMode(void);
 void ssd1306SendCommand(unsigned char * command, unsigned int numCommands);
 void ssd1306Setup(void);
 void ssd1306Error(void);
-void ssd1306DrawBuffer(uint8_t column_address, uint8_t page_address, uint8_t *buff);
-
-
-
-
-
+void ssd1306DrawBuffer(uint8_t columnAddress, uint8_t pageAddress, uint8_t *buff);
+void ssd1306DrawPage(uint8_t columnAddress, uint8_t pageAddress, uint8_t *buff, uint16_t size);
+void ssd1306AddCharToBuffer(uint8_t column, uint8_t page, uint8_t letter, uint8_t *buffer, uint8_t offset);
+void ssd1306AddStringToBuffer(uint8_t column, uint8_t page, char *string, uint8_t *buffer, uint8_t offset);
+void ssd1306AddCharToBufferDoubleSize(uint8_t column, uint8_t page, uint8_t letter, uint8_t *buffer, uint8_t offset);
+void ssd1306AddStringToBufferDoubleSize(uint8_t column, uint8_t page, char *string, uint8_t *buffer, uint8_t offset);
+void ssd1306AddCharToBufferQuadSize(uint8_t column, uint8_t page, uint8_t letter, uint8_t *buffer, uint8_t offset);
+void ssd1306AddStringToBufferQuadSize(uint8_t column, uint8_t page, char *string, uint8_t *buffer, uint8_t offset);

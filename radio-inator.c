@@ -2,11 +2,8 @@
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "pfleury/i2cmaster.h"
-#include "myFont.h"
 #include "radio-inator.h"
 #include "ssd1306.h"
-
-
 
 int main(void) {
 
@@ -15,16 +12,21 @@ int main(void) {
     PORTC |= (1 << PINC4) | (1 << PINC5);
     i2c_init();
     ssd1306Setup();
+    int x, y;
     
     unsigned char buffer[1024];
-    for (int x = 0; x < 1024; x++) {
-        buffer[x] = 0x50;
+    for (x = 0; x < 1024; x++) {
+        buffer[x] = 0xff;
     }
     unsigned char commands[10];
     commands[0] = SSD1306_SET_CONTRAST;
     commands[1] = 0xa0;
-    ssd1306SendCommand(commands,2);
-    ssd1306DrawBuffer(0,0,buffer);
+    ssd1306SendCommand(commands, 2);
+    char thisString[30];
+
+    ssd1306AddStringToBufferQuadSize(0,2,"106.62",buffer,0);
+    ssd1306AddStringToBufferDoubleSize(0,6,"Farnsworth",buffer,0);
+    ssd1306DrawBuffer(0, 0, buffer);
 
     /*
     // Override Default
