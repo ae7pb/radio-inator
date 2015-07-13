@@ -6,6 +6,19 @@
  *
  *************************************/
 
+#define SSD1306_ADDRESS 0x78
+
+#define SSD1306_CONTROL_BYTE            0x80
+#define SSD1306_CONTROL_STREAM          0x00
+#define SSD1306_DATA_BYTE               0xC0
+#define SSD1306_DATA_STREAM             0x40
+/*
+ * Right after you start up the i2c and send the address you need to send whether
+ * or not the data is going to be control data or data data.  If you choose the streams then
+ * it will continue to accept that data or control stream until you issue an i2c stop
+ */
+
+
 // "Fundamental Commands"
 #define SSD1306_SET_CONTRAST 		0x81 // 256 possible values
 #define SSD1306_DISPLAY_ON 		0xA4 // displays what is in the display's ram
@@ -28,7 +41,7 @@
  * See the datasheet or experemint and hope for the best
  ******/
 #define SSD1306_VERT_RIGHT_SCROLL	0x29
-#define SSD1306_VERT_LEFT_SCROLL	        0x2A
+#define SSD1306_VERT_LEFT_SCROLL	0x2A
 /*
  * Send an 0x00, page start, sroll timing, page end
  * Then vertical scrolling offset. 0x01 = 1 row, 0x3F = 63 rows
@@ -46,7 +59,19 @@
  ******/
 
 // Addressing Section
+#define SSD1306_PAGE_COL_LOW_NIBBLE     0x00
+#define SSD1306_PAGE_COL_HIGH_NIBBLE    0x10
+/*
+ * Set the start column of page addressing mode.  Basically you need to or this
+ * | with the nibble to set the column.  
+ */
+
+
+
 #define SSD1306_SET_ADDRESSING  	0x20
+#define SSD1306_HORIZ_ADDR              0x01
+#define SSD1306_VERT_ADDR               0x02
+#define SSD1306_PAGE_ADDR               0x03
 /*
  * Then send 0x01 for Horizontal Addressing, 0x02 for VerticalAddressing,
  * 0x03 for Page Addressing - Horizantal means you go left to right like reading
@@ -66,19 +91,14 @@
  * paged mode (obviously).
  *******/
 
-#define SSD1306_PAGE_0                  0xB0
-#define SSD1306_PAGE_1                  0xB1
-#define SSD1306_PAGE_2                  0xB2
-#define SSD1306_PAGE_3                  0xB3
-#define SSD1306_PAGE_4                  0xB4
-#define SSD1306_PAGE_5                  0xB5
-#define SSD1306_PAGE_6                  0xB6
-#define SSD1306_PAGE_7                  0xB7
+#define SSD1306_PAGE                    0xB0
 /*
- * When you are in page addressing mode this sets which page you are on
+ * When you are in page addressing mode this sets which page you are on - this
+ * | which page you want
  *******/
 
 // HARDWARE SETUP
+#define SSD1306_SET_RAM_DISPLAY_START   0x40
 /* You can pick which piece of memory represents the first page section
  * of the screen.  You send a value of 0x40 for the first block down to 
  * 0x7f.
@@ -105,19 +125,37 @@
  * Another hardware related one that I don't know about
  ******/
 
+#define SSD1306_COM_DIRECTION_LOW       0xC0
+#define SSD1306_COM_DIRECTION_HIGH      0xc8
+/*
+ * Which sequence the coms are scanned either starting at com0 or com(n-1)
+ */
+
 // Timing Section
 #define SSD1306_SET_DISPLAY_CLOCK_OSCILLATOR    0xD5
 #define SSD1306_SET_PRE_CHARGE_PERIOD           0xD9
-#define SSD1306_SET_VCOMH_DESELECT_LEVEL        0xDB
+#define SSD1306_SET_VCOM_DESELECT_LEVEL         0xDB
 /*
  * See the datasheet
  *******/
 
+#define SSD1306_SET_CHARGE_PUMP         0x8D
+#define SSD1306_CHARGE_PUMP_DISABLE     0x10
+#define SSD1306_CHARGE_PUMP_ENABLE      0x14
+/*
+ * enable the charge pump for extra voltage for the display?
+ */
+
+
 #define SSD1306_NOOP                    0xE3
 
-
-
-
+void ssd1306SetDataMode(void);
+void ssd1306SendData(unsigned char data[], unsigned int dataSize);
+void ssd1306SetCommandMode(void);
+void ssd1306SendCommand(unsigned char * command, unsigned int numCommands);
+void ssd1306Setup(void);
+void ssd1306Error(void);
+void ssd1306DrawBuffer(uint8_t column_address, uint8_t page_address, uint8_t *buff);
 
 
 

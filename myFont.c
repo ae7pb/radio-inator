@@ -1,4 +1,7 @@
-unsigned char Ascii_1[97][5]={     // Refer to "Times New Roman" Font Database...
+ #include <avr/io.h>
+ #include <avr/pgmspace.h>
+
+const unsigned char Ascii_1[97][5] PROGMEM = {     // Refer to "Times New Roman" Font Database...
                                    //   Basic Characters
     {0x00,0x00,0x00,0x00,0x00},     //   (  0)    - 0x0000 Empty set
     {0x00,0x00,0x4F,0x00,0x00},     //   (  1)  ! - 0x0021 Exclamation Mark

@@ -4,32 +4,45 @@
 #include "pfleury/i2cmaster.h"
 #include "myFont.h"
 #include "radio-inator.h"
+#include "ssd1306.h"
 
-#define SSD1063_ADDRESS 0x78
-
-void error(void) {
-    while(1) {
-        PORTB |= (1 << PINB5);
-        _delay_ms(500);
-        PORTB &= ~(1 << PINB5);
-        _delay_ms(500);
-    }
-}
 
 
 int main(void) {
-    unsigned char returnValue;
-    DDRB |= (1 << PINB5);
-    PORTB |= (1 << PINB5);
+
+
     DDRC &= ~((1 << PINC4) | (1 << PINC5));
     PORTC |= (1 << PINC4) | (1 << PINC5);
     i2c_init();
-    returnValue = i2c_start(SSD1063_ADDRESS+I2C_WRITE);
-    if( returnValue ) {
-        i2c_stop();
-        error();
-        return 0;
+    ssd1306Setup();
+    
+    unsigned char buffer[1024];
+    for (int x = 0; x < 1024; x++) {
+        buffer[x] = 0x50;
     }
+    unsigned char commands[10];
+    commands[0] = SSD1306_SET_CONTRAST;
+    commands[1] = 0xa0;
+    ssd1306SendCommand(commands,2);
+    ssd1306DrawBuffer(0,0,buffer);
+
+    /*
+    // Override Default
+    i2c_write(SSD1306_SET_ADDRESSING);
+    i2c_write(SSD1306_PAGE_ADDR);
     
+    // Page address start at left
+    i2c_write(SSD1306_PAGE_COL_LOW_NIBBLE | 0x00);
+    i2c_write(SSD1306_PAGE_COL_HIGH_NIBBLE | 0x00);
+    i2c_write(SSD1306_PAGE | 0x00);
+    //i2c_write(0x40);
+    i2c_start(SSD1063_ADDRESS+I2C_WRITE);
+    for(int x=0; x<8; x++) {
+        i2c_write(SSD1306_PAGE | x);
+        for (int y = 0; y < 128; y ++) {
+            i2c_write(15);
+        }
+    }
+     */
 }
-    
+

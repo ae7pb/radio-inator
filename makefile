@@ -40,8 +40,8 @@
 
 
 AVRDUDE_PROGRAMMER = arduino
-AVRDUDE_PORT = /dev/ttyACM0    # programmer connected to serial device
-#AVRDUDE_PORT = com8    # programmer connected to serial device
+#AVRDUDE_PORT = /dev/ttyACM0    # programmer connected to serial device
+AVRDUDE_PORT = com5    # programmer connected to serial device
 AVRDUDE_FLAGS = -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER) -b 115200
 
 #AVRDUDE_PROGRAMMER = arduino
@@ -76,7 +76,7 @@ TARGET = radio-inator
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c pfleury/twimaster.c myFont.c
+SRC = $(TARGET).c pfleury/twimaster.c myFont.c ssd1306.c
 
 
 # List Assembler source files here.
