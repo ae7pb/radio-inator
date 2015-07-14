@@ -2,6 +2,7 @@
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "pfleury/i2cmaster.h"
+#include "pfleury/uart.h"
 #include "radio-inator.h"
 #include "ssd1306.h"
 
