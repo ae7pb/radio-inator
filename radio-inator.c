@@ -1,29 +1,36 @@
 #include <avr/io.h>
+// for netbeans parsing
+#ifndef __AVR_ATmega328P__
+#define __AVR_ATmega328P__
+#endif
+
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "pfleury/i2cmaster.h"
 #include "pfleury/uart.h"
 #include "radio-inator.h"
 #include "ssd1306.h"
+#include "avr-softuart-master/softuart.h"
 
 int main(void) {
-
 
     DDRC &= ~((1 << PINC4) | (1 << PINC5));
     PORTC |= (1 << PINC4) | (1 << PINC5);
     i2c_init();
     ssd1306Setup();
-    int x, y;
+    uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) );     
+    int x;
     
     unsigned char buffer[1024];
     for (x = 0; x < 1024; x++) {
         buffer[x] = 0xff;
     }
+    softuart_init();
+
     unsigned char commands[10];
     commands[0] = SSD1306_SET_CONTRAST;
     commands[1] = 0xa0;
     ssd1306SendCommand(commands, 2);
-    char thisString[30];
 
     ssd1306AddStringToBufferQuadSize(0,2,"106.62",buffer,0);
     ssd1306AddStringToBufferDoubleSize(0,6,"Farnsworth",buffer,0);
