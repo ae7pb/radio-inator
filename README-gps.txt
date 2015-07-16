@@ -13,17 +13,23 @@ $GPRMC,043723.00,A,3942.54548,N,11149.69815,W,0.449,,160715,,,A*65
 $GPVTG,,T,,M,0.449,N,0.831,K,A*20
 
 $GPRMC,043755.00,A,3942.54416,N,11149.69881,W,0.317,,160715,,,A*6F
+
 $GPVTG,,T,,M,0.317,N,0.586,K,A*2D
+
 $GPGGA,043755.00,3942.54416,N,11149.69881,W,1,07,1.20,1582.4,M,-19.3,M,,*5A
 
 $GPRMC,043816.00,A,3942.54605,N,11149.69667,W,0.031,,160715,,,A*66
+header,fix time,A=valid, v=invalid,latitude,n/s,longitude,e/w,speed (knots),course in degrees,date,nothin,nothin,
+Autonimous, checksum
+
 $GPVTG,,T,,M,0.031,N,0.057,K,A*23
 
 $GPGGA,043816.00,3942.54605,N,11149.69667,W,1,07,1.21,1581.4,M,-19.3,M,,*56
-Message ID,UTC Time, Latitude, N/S, Longitute, E/W, fix?,# sattelites, Horiz Dilution of precision,
+Message ID,UTC Time, Latitude, N/S, Longitute, E/W, fix?,# satellites, Horiz Dilution of precision,
 Altitude, Meters, Geoid sep, meters, Age of Diff Corrections, Diff Reference correct, checksum, <cr><lf>
 
 $GPGSA,A,3,18,27,24,21,22,15,29,,,,,,2.05,1.21,1.66*00
 active satellite information
 
 $GPGSV,3,1,10,15,41,057,26,16,12,269,09,18,75,305,34,19,04,324,20*7C
+info about satellite in view

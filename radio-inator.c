@@ -13,6 +13,8 @@
 #include "myLibraries/ssd1306.h"
 #include "avr-softuart-master/softuart.h"
 
+
+
 int main(void) {
 
     DDRC &= ~((1 << PINC4) | (1 << PINC5));
@@ -37,22 +39,25 @@ int main(void) {
     commands[0] = SSD1306_SET_CONTRAST;
     commands[1] = 0xa0;
     ssd1306SendCommand(commands, 2);
-
     ssd1306AddStringToBufferQuadSize(0, 2, "106.62", buffer, 0);
     ssd1306AddStringToBufferDoubleSize(0, 6, "Farnsworth", buffer, 0);
     ssd1306DrawBuffer(0, 0, buffer);
     softuart_turn_rx_on();
     char gpsBuffer[401];
+    unsigned char c;
     while (1) {
-        unsigned char c;
-        for (x = 0; x < 200; x++) {
+        x = 0;
+        while (1) {
             c = softuart_getchar();
-
-            gpsBuffer[x] = c;
-            if(c == 13) { // cr
-                gpsBuffer[x+1]=0;
+            if(softUartNoDataFlag == 1)
+                continue;
+            if(c == 13 || c == 10) { // cr
+                gpsBuffer[x]=0;
                 break;
             }
+            gpsBuffer[x] = c;
+            x++;            
+
         }
         gpsBuffer[400] = 0;
         ssd1306AddStringToBuffer(0,0,gpsBuffer,buffer,0);

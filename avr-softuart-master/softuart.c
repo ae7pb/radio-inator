@@ -58,6 +58,9 @@
 // 6. void putchar( char )
 //    Writes a character to the serial port.
 //
+//  David Whipple added the softUartNoDataFlag so that the receive function would not
+//  block other functions of the radio.
+//
 // ---------------------------------------------------------------------
 
 /* 
@@ -161,6 +164,8 @@ volatile static unsigned char flag_tx_busy;
 volatile static unsigned char timer_tx_ctr;
 volatile static unsigned char bits_left_in_tx;
 volatile static unsigned short internal_tx_buffer; /* ! mt: was type uchar - this was wrong */
+
+unsigned char softUartNoDataFlag;
 
 #define set_tx_pin_high()      ( SOFTUART_TXPORT |=  ( 1 << SOFTUART_TXBIT ) )
 #define set_tx_pin_low()       ( SOFTUART_TXPORT &= ~( 1 << SOFTUART_TXBIT ) )
@@ -269,16 +274,12 @@ void softuart_init(void) {
     flag_rx_off = SU_FALSE;
 
     set_tx_pin_high(); /* mt: set to high to avoid garbage on init */
-
+    softUartNoDataFlag = 0;
     io_init();
     timer_init();
 }
 
-static void idle(void) {
-    // timeout handling goes here 
-    // - but there is a "softuart_kbhit" in this code...
-    // add watchdog-reset here if needed
-}
+
 
 void softuart_turn_rx_on(void) {
     flag_rx_off = SU_FALSE;
@@ -291,14 +292,15 @@ void softuart_turn_rx_off(void) {
 char softuart_getchar(void) {
     char ch;
 
-    while (qout == qin) {
-        idle();
+    if (qout == qin) {
+        softUartNoDataFlag = 1;
+        return 0;
     }
     ch = inbuf[qout];
     if (++qout >= SOFTUART_IN_BUF_SIZE) {
         qout = 0;
     }
-
+    softUartNoDataFlag = 0;
     return ( ch);
 }
 

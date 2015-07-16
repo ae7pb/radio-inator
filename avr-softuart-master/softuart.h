@@ -47,11 +47,11 @@
 
     #define SOFTUART_RXPIN   PIND
     #define SOFTUART_RXDDR   DDRD
-    #define SOFTUART_RXBIT   PD2
+    #define SOFTUART_RXBIT   PD0
 
     #define SOFTUART_TXPORT  PORTD
     #define SOFTUART_TXDDR   DDRD
-    #define SOFTUART_TXBIT   PD3
+    #define SOFTUART_TXBIT   PD1
     #define SOFTUART_T_COMP_LABEL      TIMER0_COMPA_vect
     #define SOFTUART_T_COMP_REG        OCR0A
     #define SOFTUART_T_CONTR_REGA      TCCR0A
@@ -122,3 +122,5 @@ void softuart_puts_p( const char *prg_s );
 // Helper-Macro - "automatically" inserts PSTR
 // when used: include avr/pgmspace.h before this include-file
 #define softuart_puts_P(s___) softuart_puts_p(PSTR(s___))
+
+extern unsigned char softUartNoDataFlag;
