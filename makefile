@@ -76,7 +76,8 @@ TARGET = radio-inator
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c pfleury/twimaster.c myFont.c ssd1306.c avr-softuart-master/softuart.c
+SRC = $(TARGET).c pfleury/twimaster.c pfleury/uart.c myFont.c myLibraries/ssd1306.c \
+avr-softuart-master/softuart.c
 
 
 # List Assembler source files here.
@@ -106,7 +107,7 @@ DEBUG = dwarf-2
 #     Each directory must be seperated by a space.
 #     Use forward slashes for directory separators.
 #     For a directory that has spaces, enclose it in quotes.
-EXTRAINCDIRS = pfleury avr-softuart-master
+EXTRAINCDIRS = pfleury avr-softuart-master myLibraries
 
 
 # Compiler flag to set the C Standard level.

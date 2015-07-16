@@ -6,10 +6,11 @@
 
 #include <util/delay.h>
 #include <avr/pgmspace.h>
+#include <avr/interrupt.h>
 #include "pfleury/i2cmaster.h"
 #include "pfleury/uart.h"
 #include "radio-inator.h"
-#include "ssd1306.h"
+#include "myLibraries/ssd1306.h"
 #include "avr-softuart-master/softuart.h"
 
 int main(void) {
@@ -18,24 +19,45 @@ int main(void) {
     PORTC |= (1 << PINC4) | (1 << PINC5);
     i2c_init();
     ssd1306Setup();
-    uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) );     
+    uart_init(UART_BAUD_SELECT(9600, F_CPU));
+    softuart_init();
+
+    // yea interrupts
+    sei();
+
     int x;
-    
+
     unsigned char buffer[1024];
     for (x = 0; x < 1024; x++) {
         buffer[x] = 0xff;
     }
-    softuart_init();
+
 
     unsigned char commands[10];
     commands[0] = SSD1306_SET_CONTRAST;
     commands[1] = 0xa0;
     ssd1306SendCommand(commands, 2);
 
-    ssd1306AddStringToBufferQuadSize(0,2,"106.62",buffer,0);
-    ssd1306AddStringToBufferDoubleSize(0,6,"Farnsworth",buffer,0);
+    ssd1306AddStringToBufferQuadSize(0, 2, "106.62", buffer, 0);
+    ssd1306AddStringToBufferDoubleSize(0, 6, "Farnsworth", buffer, 0);
     ssd1306DrawBuffer(0, 0, buffer);
+    softuart_turn_rx_on();
+    char gpsBuffer[401];
+    while (1) {
+        unsigned char c;
+        for (x = 0; x < 200; x++) {
+            c = softuart_getchar();
 
+            gpsBuffer[x] = c;
+            if(c == 13) { // cr
+                gpsBuffer[x+1]=0;
+                break;
+            }
+        }
+        gpsBuffer[400] = 0;
+        ssd1306AddStringToBuffer(0,0,gpsBuffer,buffer,0);
+        ssd1306DrawBuffer(0,0,buffer);
+    }
     /*
     // Override Default
     i2c_write(SSD1306_SET_ADDRESSING);
