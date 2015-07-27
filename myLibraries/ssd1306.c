@@ -158,7 +158,7 @@ void ssd1306DrawPage(uint8_t columnAddress, uint8_t pageAddress, uint8_t *buff, 
     ssd1306SendData(buff, size);
 }
 
-void ssd1306AddCharToBuffer(uint8_t column, uint8_t page, uint8_t letter, uint8_t *buffer, uint8_t offset) {
+void ssd1306AddCharToBuffer(uint16_t column, uint8_t page, uint8_t letter, uint8_t *buffer, uint8_t offset) {
     int x = 0;
     for (x = 0; x < 5; x++) {
         buffer[x + ((page * 128) + column)] = pgm_read_byte(font + ((letter - offset)*5) + x);
@@ -166,7 +166,7 @@ void ssd1306AddCharToBuffer(uint8_t column, uint8_t page, uint8_t letter, uint8_
     buffer[5 + ((page * 128) + column)] = 0;
 }
 
-void ssd1306AddStringToBuffer(uint8_t column, uint8_t page, char *string, uint8_t *buffer, uint8_t offset) {
+void ssd1306AddStringToBuffer(uint16_t column, uint8_t page, char *string, uint8_t *buffer, uint8_t offset) {
     int y = 0;
     while (string[0] != 0) {
         ssd1306AddCharToBuffer(column + (6 * y), page, string[0], buffer, offset);
@@ -175,7 +175,7 @@ void ssd1306AddStringToBuffer(uint8_t column, uint8_t page, char *string, uint8_
     }
 }
 
-void ssd1306AddCharToBufferDoubleSize(uint8_t column, uint8_t page, uint8_t letter, uint8_t *buffer, uint8_t offset) {
+void ssd1306AddCharToBufferDoubleSize(uint16_t column, uint8_t page, uint8_t letter, uint8_t *buffer, uint8_t offset) {
     int x = 0;
     char thisChar = 0;
     char doubleCharTop = 0;
@@ -211,7 +211,7 @@ void ssd1306AddCharToBufferDoubleSize(uint8_t column, uint8_t page, uint8_t lett
 
 }
 
-void ssd1306AddStringToBufferDoubleSize(uint8_t column, uint8_t page, char *string, uint8_t *buffer, uint8_t offset) {
+void ssd1306AddStringToBufferDoubleSize(uint16_t column, uint8_t page, char *string, uint8_t *buffer, uint8_t offset) {
     int y = 0;
     while (string[0] != 0) {
         ssd1306AddCharToBufferDoubleSize(column + (11 * y), (page), string[0], buffer, offset);
@@ -220,7 +220,7 @@ void ssd1306AddStringToBufferDoubleSize(uint8_t column, uint8_t page, char *stri
     }
 }
 
-void ssd1306AddCharToBufferQuadSize(uint8_t column, uint8_t page, uint8_t letter, uint8_t *buffer, uint8_t offset) {
+void ssd1306AddCharToBufferQuadSize(uint16_t column, uint8_t page, uint8_t letter, uint8_t *buffer, uint8_t offset) {
     int x = 0;
     int y = 0;
     char thisChar = 0;
@@ -261,7 +261,7 @@ void ssd1306AddCharToBufferQuadSize(uint8_t column, uint8_t page, uint8_t letter
 
 }
 
-void ssd1306AddStringToBufferQuadSize(uint8_t column, uint8_t page, char *string, uint8_t *buffer, uint8_t offset) {
+void ssd1306AddStringToBufferQuadSize(uint16_t column, uint8_t page, char *string, uint8_t *buffer, uint8_t offset) {
     int y = 0;
     while (string[0] != 0) {
         ssd1306AddCharToBufferQuadSize(column + (21 * y), (page), string[0], buffer, offset);

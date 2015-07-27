@@ -19,8 +19,8 @@ $GPVTG,,T,,M,0.317,N,0.586,K,A*2D
 $GPGGA,043755.00,3942.54416,N,11149.69881,W,1,07,1.20,1582.4,M,-19.3,M,,*5A
 
 $GPRMC,043816.00,A,3942.54605,N,11149.69667,W,0.031,,160715,,,A*66
-header,fix time,A=valid, v=invalid,latitude,n/s,longitude,e/w,speed (knots),course in degrees,date,nothin,nothin,
-Autonimous, checksum
+header,fix time,A=valid, v=invalid,latitude,n/s,longitude,e/w,speed (knots),
+course in degrees - minutes (no seconds),date,nothin,nothin,Autonamous, checksum
 
 $GPVTG,,T,,M,0.031,N,0.057,K,A*23
 
